@@ -310,22 +310,52 @@
   }
   @keyframes spRing{0%,100%{opacity:.5}50%{opacity:1}}
   .tile.special .tile-inner{z-index:1;}
-  .tile.special-col .tile-inner{animation:nodY 1.15s ease-in-out infinite;}
-  .tile.special-row .tile-inner{animation:shakeX 1.15s ease-in-out infinite;}
-  @keyframes nodY{0%,100%{transform:translateY(-5%)}50%{transform:translateY(5%)}}
-  @keyframes shakeX{0%,100%{transform:translateX(-6%)}50%{transform:translateX(6%)}}
+  .tile.special-col .tile-inner{animation:nodY .9s ease-in-out infinite;}
+  .tile.special-row .tile-inner{animation:shakeX .9s ease-in-out infinite;}
+  @keyframes nodY{0%,100%{transform:translateY(-9%)}50%{transform:translateY(9%)}}
+  @keyframes shakeX{0%,100%{transform:translateX(-11%) rotate(-5deg)}50%{transform:translateX(11%) rotate(5deg)}}
   .sp-mark{
-    position:absolute;right:-4%;bottom:-4%;transform:none;
-    width:46%;max-width:26px;pointer-events:none;z-index:4;
+    position:absolute;right:-6%;bottom:-6%;transform:none;
+    width:56%;max-width:30px;pointer-events:none;z-index:4;
     filter:drop-shadow(0 1px 3px rgba(20,40,70,.7));
   }
   .sp-mark svg{position:static;display:block;width:100%;height:auto;animation:none;filter:none;}
   .sp-mark svg path{fill:#fff44b;stroke:#fff;stroke-width:1.2;paint-order:stroke fill;}
+  .tile.special-row::before{border-color:rgba(255,226,96,.95);box-shadow:0 0 11px rgba(255,214,60,.95),inset 0 0 11px rgba(255,238,150,.7);}
+  .tile.special-col::before{border-color:rgba(130,238,255,.95);box-shadow:0 0 11px rgba(90,220,255,.95),inset 0 0 11px rgba(170,245,255,.7);}
+  .tile.special-col .sp-mark svg path{fill:#9df4ff;}
   .tile.promote .tile-inner{animation:promotePop .5s cubic-bezier(.2,1.5,.4,1);}
   @keyframes promotePop{
     0%{transform:scale(.6)}
     55%{transform:scale(1.3)}
     100%{transform:scale(1)}
+  }
+
+  /* ---------- 魔力猫头鹰 ---------- */
+  .tile.owl{z-index:3;}
+  .tile.owl .tile-inner{animation:owlFloat 2.2s ease-in-out infinite;filter:drop-shadow(0 0 5px rgba(170,105,255,.95));}
+  @keyframes owlFloat{0%,100%{transform:translateY(-4%) rotate(-3deg)}50%{transform:translateY(3%) rotate(3deg)}}
+  .tile.owl::before{
+    content:"";position:absolute;inset:1%;border-radius:12px;pointer-events:none;z-index:3;
+    border:2.5px solid rgba(206,162,255,1);
+    box-shadow:0 0 20px rgba(168,108,255,1),inset 0 0 14px rgba(220,196,255,.85);
+    animation:spRing 1.5s ease-in-out infinite;
+  }
+  .tile.owl::after{
+    content:"";position:absolute;inset:9%;border-radius:50%;pointer-events:none;z-index:0;
+    background:radial-gradient(circle,rgba(255,255,255,.6),rgba(178,120,255,.35) 52%,rgba(150,90,255,.12) 72%,transparent 80%);
+  }
+  .tile.owl .tile-inner{z-index:1;}
+
+  .owl-flash{
+    position:absolute;inset:0;z-index:8;pointer-events:none;
+    background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.95),rgba(196,132,255,.6) 34%,rgba(120,220,255,.38) 62%,transparent 78%);
+    animation:owlFlash .75s ease-out forwards;
+  }
+  @keyframes owlFlash{
+    0%{opacity:0;transform:scale(.25)}
+    32%{opacity:1}
+    100%{opacity:0;transform:scale(1.75)}
   }
 
   .laser{position:absolute;pointer-events:none;z-index:9;will-change:transform,opacity;}
@@ -824,6 +854,26 @@
     </svg>`
   };
 
+  SPRITES.owl = `<svg viewBox="10 6 102 106" aria-hidden="true">
+    <path d="M28 36 L22 10 L48 24 Z" fill="#6b4423"/>
+    <path d="M92 36 L98 10 L72 24 Z" fill="#6b4423"/>
+    <ellipse cx="60" cy="70" rx="46" ry="42" fill="#8a5a33"/>
+    <ellipse cx="60" cy="70" rx="40" ry="36" fill="none" stroke="#c9a06b" stroke-width="2" opacity=".5"/>
+    <ellipse cx="60" cy="88" rx="27" ry="23" fill="#f7e3c6"/>
+    <circle cx="43" cy="58" r="18" fill="#fffdf5"/>
+    <circle cx="77" cy="58" r="18" fill="#fffdf5"/>
+    <circle cx="43" cy="59" r="9.5" fill="#2f2114"/>
+    <circle cx="77" cy="59" r="9.5" fill="#2f2114"/>
+    <circle cx="39.5" cy="55" r="3.4" fill="#fff"/>
+    <circle cx="73.5" cy="55" r="3.4" fill="#fff"/>
+    <path d="M60 64 l8 9 -8 7 -8-7 Z" fill="#ffa41b"/>
+    <path d="M48 92 q12 9 24 0" stroke="#d9a25f" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M22 66 q-9 8-6 20" stroke="#6b4423" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M98 66 q9 8 6 20" stroke="#6b4423" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M20 26 l2.6 6.4 6.4 2.6 -6.4 2.6 -2.6 6.4 -2.6-6.4 -6.4-2.6 6.4-2.6Z" fill="#e9d1ff"/>
+    <path d="M100 30 l2 5 5 2 -5 2 -2 5 -2-5 -5-2 5-2Z" fill="#fff2b0"/>
+  </svg>`;
+
   const $ = (sel, root) => (root || document).querySelector(sel);
   const boardEl = $("#board");
   const cellsLayer = $(".cells", boardEl);
@@ -947,6 +997,15 @@
   };
 
   function applySpecial(tile, kind){
+    if (kind === "owl"){
+      tile.special = "owl";
+      tile.type = "owl";
+      tile.el.dataset.type = "owl";
+      tile.el.classList.add("owl");
+      const inner = tile.el.querySelector(".tile-inner");
+      if (inner) inner.innerHTML = SPRITES.owl;
+      return;
+    }
     tile.special = kind;
     tile.el.classList.add("special", "special-" + kind);
     if (!tile.el.querySelector(".sp-mark")){
@@ -959,7 +1018,7 @@
 
   function createTile(type, r, c, spawnRow, special){
     const el = document.createElement("div");
-    el.className = "tile";
+    el.className = "tile" + (type === "owl" ? " owl" : "");
     el.dataset.type = type;
     el.dataset.r = r;
     el.dataset.c = c;
@@ -1014,9 +1073,9 @@
       let c = 0;
       while (c < COLS){
         const t = grid[r][c];
-        if (!t){ c++; continue; }
+        if (!t || t.type === "owl"){ c++; continue; }
         let e = c;
-        while (e + 1 < COLS && grid[r][e+1] && grid[r][e+1].type === t.type) e++;
+        while (e + 1 < COLS && grid[r][e+1] && grid[r][e+1].type === t.type && t.type !== "owl") e++;
         if (e - c + 1 >= 3){
           const cells = [];
           for (let i = c; i <= e; i++) cells.push({r, c: i});
@@ -1029,9 +1088,9 @@
       let r = 0;
       while (r < ROWS){
         const t = grid[r][c];
-        if (!t){ r++; continue; }
+        if (!t || t.type === "owl"){ r++; continue; }
         let e = r;
-        while (e + 1 < ROWS && grid[e+1][c] && grid[e+1][c].type === t.type) e++;
+        while (e + 1 < ROWS && grid[e+1][c] && grid[e+1][c].type === t.type && t.type !== "owl") e++;
         if (e - r + 1 >= 3){
           const cells = [];
           for (let i = r; i <= e; i++) cells.push({r: i, c});
@@ -1064,19 +1123,30 @@
   }
 
   function findMove(){
+    for (let r = 0; r < ROWS; r++){
+      for (let c = 0; c < COLS; c++){
+        const t = grid[r][c];
+        if (!t || t.type !== "owl") continue;
+        const nbs = [[r, c-1], [r, c+1], [r-1, c], [r+1, c]];
+        for (const [rr, cc] of nbs){
+          if (rr < 0 || rr >= ROWS || cc < 0 || cc >= COLS) continue;
+          if (grid[rr][cc] && grid[rr][cc].type !== "owl") return [{r, c}, {r: rr, c: cc}];
+        }
+      }
+    }
     const g = grid.map(row => row.map(t => t ? t.type : null));
     const swap = (a, b) => { const tmp = g[a.r][a.c]; g[a.r][a.c] = g[b.r][b.c]; g[b.r][b.c] = tmp; };
     for (let r = 0; r < ROWS; r++){
       for (let c = 0; c < COLS; c++){
-        if (!g[r][c]) continue;
-        if (c + 1 < COLS && g[r][c+1]){
+        if (!g[r][c] || g[r][c] === "owl") continue;
+        if (c + 1 < COLS && g[r][c+1] && g[r][c+1] !== "owl"){
           const a = {r, c}, b = {r, c: c+1};
           swap(a, b);
           const ok = hasRunOn(g);
           swap(a, b);
           if (ok) return [a, b];
         }
-        if (r + 1 < ROWS && g[r+1][c]){
+        if (r + 1 < ROWS && g[r+1][c] && g[r+1][c] !== "owl"){
           const a = {r, c}, b = {r: r+1, c};
           swap(a, b);
           const ok = hasRunOn(g);
@@ -1175,6 +1245,11 @@
   /* ---------------- 消除主循环 ---------------- */
   async function resolveAll(){
     let chain = 0;
+    /* 特殊棋子类型跟随玩家的交换方向：左右换=消整行，上下换=消整列 */
+    let swipeDir = null;
+    if (swapFocus){
+      swipeDir = (swapFocus[0].r === swapFocus[1].r) ? "row" : "col";
+    }
     while (chain < 20){
       const runs = findRuns();
       if (!runs.length) break;
@@ -1192,7 +1267,7 @@
       });
       if (!clearSet.size) break;
 
-      /* 四连及以上：保留其中一颗，升级为整行 / 整列特殊棋子 */
+      /* 四连升级为整行/整列特效，五连升级为魔力猫头鹰 */
       runs.forEach(run => {
         if (run.len < 4) return;
         let pick = null;
@@ -1207,7 +1282,7 @@
         const key = pick.r + "," + pick.c;
         keepSet.set(key, {
           r: pick.r, c: pick.c, tile: pick.tile,
-          special: run.dir === "v" ? "col" : "row"
+          special: run.len >= 5 ? "owl" : (swipeDir || (run.dir === "v" ? "col" : "row"))
         });
         clearSet.delete(key);
       });
@@ -1275,6 +1350,7 @@
       await collapse();
       updateHud();
       await sleep(40);
+      swipeDir = null;   /* 只有玩家直接交换产生的那一波才跟随交换方向 */
     }
     swapFocus = null;
     await sleep(120);
@@ -1308,6 +1384,22 @@
     swapCells(a, b);
     await sleep(250);
 
+    if (ta.type === "owl" || tb.type === "owl"){
+      if (ta.type === "owl" && tb.type === "owl"){
+        swapCells(a, b);
+        await sleep(250);
+        busy = false;
+        resetIdle();
+        return;
+      }
+      moves = Math.max(0, moves - 1);
+      updateHud(true);
+      swapFocus = null;
+      await owlBlast(a, b);
+      await settleMove();
+      return;
+    }
+
     if (!findRuns().length){
       swapCells(a, b);
       await sleep(250);
@@ -1320,7 +1412,94 @@
     updateHud(true);
     swapFocus = [a, b];
     await resolveAll();
+    await settleMove();
+  }
 
+  /* ---------------- 魔力猫头鹰 ---------------- */
+  function owlFlash(){
+    const d = document.createElement("div");
+    d.className = "owl-flash";
+    boardEl.appendChild(d);
+    setTimeout(() => d.remove(), 800);
+  }
+
+  async function owlBlast(a, b){
+    /* 交换后：a 上是那只小动物，b 上是猫头鹰 */
+    const owl = grid[b.r] && grid[b.r][b.c];
+    const animal = grid[a.r] && grid[a.r][a.c];
+    if (!owl || !animal || owl.type !== "owl") return;
+
+    const targetType = animal.type;
+    const kind = animal.special;          /* null / "row" / "col" */
+    const clearSet = new Map();
+    const lasers = [];
+    const group = [];
+
+    for (let r = 0; r < ROWS; r++){
+      for (let c = 0; c < COLS; c++){
+        const t = grid[r][c];
+        if (t && t.type === targetType) group.push({r, c, tile: t});
+      }
+    }
+
+    owlFlash();
+
+    if (kind === "row" || kind === "col"){
+      /* 与特效小动物交换：同类全部随机带上整行/整列特效，并立即全部触发 */
+      group.forEach(({r, c, tile}) => {
+        const k = Math.random() < 0.5 ? "row" : "col";
+        applySpecial(tile, k);
+        tile.el.classList.add("promote");
+        setTimeout(() => tile.el.classList.remove("promote"), 520);
+        lasers.push({r, c, kind: k});
+      });
+      lasers.forEach(({r, c, kind: k}) => {
+        const len = k === "row" ? COLS : ROWS;
+        for (let i = 0; i < len; i++){
+          const rr = k === "row" ? r : i;
+          const cc = k === "row" ? i : c;
+          const t2 = grid[rr][cc];
+          if (!t2) continue;
+          clearSet.set(rr + "," + cc, {r: rr, c: cc, tile: t2});
+        }
+      });
+    } else {
+      /* 与普通小动物交换：同类全部被吸收 */
+      group.forEach(({r, c, tile}) => clearSet.set(r + "," + c, {r, c, tile}));
+    }
+
+    clearSet.set(b.r + "," + b.c, {r: b.r, c: b.c, tile: owl});
+
+    let gained = clearSet.size * (kind ? 45 : 80) + lasers.length * 120;
+    score += gained;
+
+    lasers.forEach(l => addLaser(l.r, l.c, l.kind));
+
+    let sumR = 0, sumC = 0;
+    clearSet.forEach(({r, c, tile}) => {
+      sumR += r; sumC += c;
+      targets.forEach(t => { if (t.type === tile.type) t.got = Math.min(t.need, t.got + 1); });
+      addBurst(r, c);
+      tile.el.classList.add("pop");
+    });
+
+    const n = clearSet.size || 1;
+    addScorePop(sumR / n, sumC / n, "+" + gained);
+    updateHud(true);
+
+    await sleep(lasers.length ? 360 : 260);
+
+    clearSet.forEach(({r, c, tile}) => {
+      tile.el.remove();
+      if (grid[r][c] === tile) grid[r][c] = null;
+    });
+
+    await collapse();
+    updateHud();
+    await resolveAll();
+  }
+
+  async function settleMove(){
     const win = targets.every(t => t.got >= t.need);
     if (win){
       over = true;
@@ -1336,7 +1515,6 @@
       showLose();
       return;
     }
-
     if (!findMove()){
       await reshuffle();
     }
