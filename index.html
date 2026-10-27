@@ -295,6 +295,65 @@
     100%{opacity:0;transform:translate(-50%,-165%) scale(.95)}
   }
 
+  /* ---------- 特殊棋子（整行 / 整列） ---------- */
+  .tile.special::after{
+    content:"";position:absolute;inset:8%;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.62),rgba(255,244,170,.28) 52%,transparent 72%);
+    box-shadow:0 0 14px rgba(255,236,120,.85);
+    pointer-events:none;z-index:0;
+  }
+  .tile.special::before{
+    content:"";position:absolute;inset:3%;border-radius:12px;
+    border:2px solid rgba(255,228,96,.95);
+    box-shadow:0 0 11px rgba(255,214,60,.95),inset 0 0 11px rgba(255,238,150,.7);
+    animation:spRing 1.5s ease-in-out infinite;pointer-events:none;z-index:3;
+  }
+  @keyframes spRing{0%,100%{opacity:.5}50%{opacity:1}}
+  .tile.special .tile-inner{z-index:1;}
+  .tile.special-col .tile-inner{animation:nodY 1.15s ease-in-out infinite;}
+  .tile.special-row .tile-inner{animation:shakeX 1.15s ease-in-out infinite;}
+  @keyframes nodY{0%,100%{transform:translateY(-5%)}50%{transform:translateY(5%)}}
+  @keyframes shakeX{0%,100%{transform:translateX(-6%)}50%{transform:translateX(6%)}}
+  .sp-mark{
+    position:absolute;right:-4%;bottom:-4%;transform:none;
+    width:46%;max-width:26px;pointer-events:none;z-index:4;
+    filter:drop-shadow(0 1px 3px rgba(20,40,70,.7));
+  }
+  .sp-mark svg{position:static;display:block;width:100%;height:auto;animation:none;filter:none;}
+  .sp-mark svg path{fill:#fff44b;stroke:#fff;stroke-width:1.2;paint-order:stroke fill;}
+  .tile.promote .tile-inner{animation:promotePop .5s cubic-bezier(.2,1.5,.4,1);}
+  @keyframes promotePop{
+    0%{transform:scale(.6)}
+    55%{transform:scale(1.3)}
+    100%{transform:scale(1)}
+  }
+
+  .laser{position:absolute;pointer-events:none;z-index:9;will-change:transform,opacity;}
+  .laser-h{
+    left:0;width:100%;height:10px;border-radius:99px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.9) 14%,#fff7b8 46%,#fff 56%,rgba(255,255,255,.9) 86%,transparent);
+    box-shadow:0 0 22px 7px rgba(255,242,150,.95),0 0 46px 14px rgba(255,214,70,.55);
+    animation:beamH .58s ease-out forwards;
+  }
+  .laser-v{
+    top:0;height:100%;width:10px;border-radius:99px;
+    background:linear-gradient(180deg,transparent,rgba(255,255,255,.9) 14%,#fff7b8 46%,#fff 56%,rgba(255,255,255,.9) 86%,transparent);
+    box-shadow:0 0 22px 7px rgba(255,242,150,.95),0 0 46px 14px rgba(255,214,70,.55);
+    animation:beamV .58s ease-out forwards;
+  }
+  @keyframes beamH{
+    0%{opacity:0;transform:translateY(-50%) scaleX(.15)}
+    16%{opacity:1;transform:translateY(-50%) scaleX(1)}
+    72%{opacity:.95;transform:translateY(-50%) scaleX(1)}
+    100%{opacity:0;transform:translateY(-50%) scaleX(1)}
+  }
+  @keyframes beamV{
+    0%{opacity:0;transform:translateX(-50%) scaleY(.15)}
+    16%{opacity:1;transform:translateX(-50%) scaleY(1)}
+    72%{opacity:.95;transform:translateX(-50%) scaleY(1)}
+    100%{opacity:0;transform:translateX(-50%) scaleY(1)}
+  }
+
   /* ---------- 底部 ---------- */
   .footer{
     position:relative;z-index:5;flex:0 0 auto;
@@ -364,7 +423,7 @@
 
   /* ---------- 提示 / 弹窗 ---------- */
   .toast{
-    position:absolute;left:50%;bottom:126px;z-index:12;
+    position:absolute;left:50%;bottom:126px;z-index:40;
     transform:translate(-50%,12px);
     padding:8px 16px;border-radius:999px;
     background:rgba(17,50,86,.8);
@@ -438,6 +497,74 @@
     box-shadow:0 3px 0 rgba(190,140,80,.28);
   }
   .btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(50,110,25,.7);}
+
+  /* ---------- 选关首页 ---------- */
+  .start{
+    position:absolute;inset:0;z-index:30;overflow:hidden;
+    display:flex;flex-direction:column;
+    padding:calc(14px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,#4cb6e6 0%,#79d2f5 24%,#b8ecff 52%,#e9fbff 76%,#fff8e4 100%);
+    transition:opacity .32s ease,transform .32s ease;
+  }
+  .start.hidden{opacity:0;transform:scale(1.06);pointer-events:none;}
+  .start-head{position:relative;z-index:2;text-align:center;flex:0 0 auto;}
+  .team{display:flex;justify-content:center;gap:4px;margin-bottom:2px;}
+  .team svg{width:46px;height:46px;filter:drop-shadow(0 4px 4px rgba(20,70,100,.3));animation:bob 3.4s ease-in-out infinite;}
+  .team svg:nth-child(2){animation-delay:-.8s;}
+  .team svg:nth-child(3){animation-delay:-1.6s;}
+  .team svg:nth-child(4){animation-delay:-2.4s;}
+  .start-title{
+    margin:0;font-family:var(--num);font-size:36px;font-weight:900;letter-spacing:3px;color:#fff;
+    text-shadow:0 3px 0 #3f9a24,0 -3px 0 #3f9a24,3px 0 0 #3f9a24,-3px 0 0 #3f9a24,
+                3px 3px 0 #3f9a24,-3px 3px 0 #3f9a24,3px -3px 0 #3f9a24,-3px -3px 0 #3f9a24,
+                0 10px 18px rgba(20,80,20,.35);
+  }
+  .start-sub{margin:8px 0 0;font-size:13px;font-weight:800;color:#2f7fa5;letter-spacing:1px;text-shadow:0 1px 0 rgba(255,255,255,.85);}
+  .start-progress{
+    display:inline-block;margin-top:8px;padding:4px 14px;border-radius:999px;
+    background:rgba(255,255,255,.62);border:2px solid #fff;color:#2f7fa5;
+    font-size:12px;font-weight:800;box-shadow:0 2px 6px rgba(20,80,120,.15);
+  }
+  .levels{
+    position:relative;z-index:2;flex:1 1 auto;min-height:0;overflow-y:auto;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-content:start;
+    padding:14px 4px 10px;-webkit-overflow-scrolling:touch;
+  }
+  .lv{
+    position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    height:80px;border-radius:20px;border:3px solid #fff;
+    background:linear-gradient(#b6f585,#4cb62e 70%,#42a327);
+    box-shadow:0 5px 0 #2c7e1d,0 9px 14px rgba(30,90,20,.25);
+    color:#fff;font-family:var(--num);font-size:25px;font-weight:900;
+    text-shadow:0 2px 2px rgba(31,100,15,.5);
+    cursor:pointer;touch-action:manipulation;
+    transition:transform .12s,box-shadow .12s;
+  }
+  .lv:active{transform:translateY(3px);box-shadow:0 2px 0 #2c7e1d,0 4px 8px rgba(30,90,20,.2);}
+  .lv-num{line-height:1;}
+  .lv-stars{display:flex;gap:2px;height:14px;}
+  .lv-stars svg{width:14px;height:14px;}
+  .lv-stars svg path{fill:rgba(255,255,255,.4);stroke:rgba(255,255,255,.9);stroke-width:1.6;paint-order:stroke fill;}
+  .lv-stars svg.on path{fill:#ffd23f;stroke:#fff6c9;}
+  .lv.locked{background:linear-gradient(#e3eef5,#b7cbd9);box-shadow:0 5px 0 #8ba4b4,0 9px 14px rgba(60,90,110,.2);}
+  .lv.locked .lv-num{font-size:19px;opacity:.8;}
+  .lv-lock{width:20px;height:20px;display:block;}
+  .lv-lock svg{width:100%;height:100%;fill:#7e97a8;}
+  .lv.current{box-shadow:0 5px 0 #2c7e1d,0 0 0 4px rgba(255,214,63,.9),0 9px 18px rgba(30,90,20,.3);animation:lvPulse 1.8s ease-in-out infinite;}
+  @keyframes lvPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  .start-play{position:relative;z-index:2;flex:0 0 auto;width:100%;max-width:330px;margin:6px auto 0;}
+
+  @media (min-width:700px) and (min-height:600px){
+    .start-title{font-size:52px;}
+    .team svg{width:62px;height:62px;}
+    .start-sub{font-size:17px;}
+    .start-progress{font-size:15px;padding:6px 20px;}
+    .levels{grid-template-columns:repeat(4,1fr);gap:16px;padding:18px 10px 12px;}
+    .lv{height:104px;font-size:32px;border-radius:24px;}
+    .lv-stars{height:18px;}
+    .lv-stars svg{width:18px;height:18px;}
+    .start-play{max-width:380px;font-size:19px;}
+  }
 
   .confetti{
     position:absolute;top:-24px;width:8px;height:14px;border-radius:3px;
@@ -573,10 +700,32 @@
         <svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 1-7.45 5.1l1.9.72A6 6 0 1 0 12 6v3L7.5 5 12 1v3Z"/></svg>
         重来
       </button>
+      <button class="action-btn" id="levelsBtn" aria-label="选择关卡">
+        <svg viewBox="0 0 24 24"><path d="M4 5h7v6H4V5Zm9 0h7v6h-7V5ZM4 13h7v6H4v-6Zm9 0h7v6h-7v-6Z"/></svg>
+        选关
+      </button>
     </div>
   </footer>
 
   <div class="toast" id="toast"></div>
+
+  <section class="start" id="startScreen">
+    <div class="sun"></div>
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c4"></div>
+
+    <div class="start-head">
+      <div class="team" id="teamRow"></div>
+      <h1 class="start-title">开心消消乐</h1>
+      <p class="start-sub">选择一关，开始消除吧！</p>
+      <div class="start-progress" id="startProgress">已通关 0 / 12 关</div>
+    </div>
+
+    <div class="levels" id="levelGrid"></div>
+
+    <button class="btn primary start-play" id="startPlay">开始挑战 第 1 关</button>
+  </section>
 
   <div class="overlay" id="overlay">
     <div class="modal">
@@ -587,6 +736,7 @@
       <div class="modal-actions">
         <button class="btn primary" id="modalPrimary">下一关</button>
         <button class="btn ghost" id="modalSecondary">重玩本关</button>
+        <button class="btn ghost" id="modalBack">返回选关</button>
       </div>
     </div>
   </div>
@@ -704,7 +854,76 @@
   let targets = [], thresholds = [1000, 2200, 3600];
   let busy = false, over = false, lastWin = false;
   let selected = null, drag = null;
+  let swapFocus = null;
   let idleTimer = null, hintTimer = null, toastTimer = null;
+
+  /* ---------------- 选关首页 ---------------- */
+  const TOTAL_LEVELS = 12;
+  const STORE_KEY = "xxl-progress-v1";
+  const startScreen = $("#startScreen");
+  const levelGrid = $("#levelGrid");
+  const startProgress = $("#startProgress");
+  const startPlay = $("#startPlay");
+  const LOCK_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Zm2 0h6V7a3 3 0 0 0-6 0Z"/></svg>`;
+  let progress = { unlocked: 1, best: {} };
+
+  function loadProgress(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (!data || typeof data !== "object") return;
+      progress.unlocked = Math.min(TOTAL_LEVELS, Math.max(1, Number(data.unlocked) || 1));
+      if (data.best && typeof data.best === "object") progress.best = data.best;
+    }catch(err){}
+  }
+
+  function saveProgress(){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(progress)); }catch(err){}
+  }
+
+  function renderLevels(){
+    const cleared = Object.keys(progress.best).filter(k => progress.best[k] > 0).length;
+    startProgress.textContent = `已通关 ${cleared} / ${TOTAL_LEVELS} 关`;
+    startPlay.textContent = `开始挑战 第 ${progress.unlocked} 关`;
+
+    levelGrid.innerHTML = "";
+    for (let i = 1; i <= TOTAL_LEVELS; i++){
+      const unlocked = i <= progress.unlocked;
+      const stars = progress.best[i] || 0;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "lv" + (unlocked ? "" : " locked") + (i === progress.unlocked ? " current" : "");
+      btn.setAttribute("aria-label", unlocked ? `第 ${i} 关` : `第 ${i} 关 未解锁`);
+      btn.innerHTML = unlocked
+        ? `<span class="lv-num">${i}</span><span class="lv-stars">${[0,1,2].map(k => starMarkup(k < stars)).join("")}</span>`
+        : `<span class="lv-lock">${LOCK_SVG}</span><span class="lv-num">${i}</span>`;
+      btn.addEventListener("click", () => {
+        if (!unlocked){
+          showToast(`先通过第 ${i - 1} 关才能解锁哦`);
+          return;
+        }
+        startLevel(i);
+      });
+      levelGrid.appendChild(btn);
+    }
+  }
+
+  function startLevel(lv){
+    startScreen.classList.add("hidden");
+    setupLevel(lv);
+  }
+
+  function openStart(){
+    if (busy){ showToast("等消除结束再选关哦"); return; }
+    clearTimeout(idleTimer);
+    clearTimeout(hintTimer);
+    overlay.classList.remove("show");
+    hideHint();
+    clearSelection();
+    renderLevels();
+    startScreen.classList.remove("hidden");
+  }
 
   /* ---------------- 静态格子 ---------------- */
   (function buildCells(){
@@ -722,7 +941,23 @@
   })();
 
   /* ---------------- 棋子 ---------------- */
-  function createTile(type, r, c, spawnRow){
+  const ARROWS = {
+    col: `<svg viewBox="0 0 24 24"><path d="M12 1.8 7.2 6.6h3.3v10.8H7.2L12 22.2l4.8-4.8h-3.3V6.6h3.3z"/></svg>`,
+    row: `<svg viewBox="0 0 24 24"><path d="M1.8 12 6.6 7.2v3.3h10.8V7.2L22.2 12l-4.8 4.8v-3.3H6.6v3.3z"/></svg>`
+  };
+
+  function applySpecial(tile, kind){
+    tile.special = kind;
+    tile.el.classList.add("special", "special-" + kind);
+    if (!tile.el.querySelector(".sp-mark")){
+      const m = document.createElement("div");
+      m.className = "sp-mark";
+      m.innerHTML = ARROWS[kind];
+      tile.el.appendChild(m);
+    }
+  }
+
+  function createTile(type, r, c, spawnRow, special){
     const el = document.createElement("div");
     el.className = "tile";
     el.dataset.type = type;
@@ -732,7 +967,9 @@
     const sr = (spawnRow === undefined || spawnRow === null) ? r : spawnRow;
     el.style.transform = `translate3d(${c * 100}%, ${sr * 100}%, 0)`;
     tilesLayer.appendChild(el);
-    return { type, el };
+    const tile = { type, special: special || null, el };
+    if (tile.special) applySpecial(tile, tile.special);
+    return tile;
   }
 
   function moveTile(tile, r, c){
@@ -896,6 +1133,15 @@
     setTimeout(() => d.remove(), 1050);
   }
 
+  function addLaser(r, c, kind){
+    const d = document.createElement("div");
+    d.className = "laser " + (kind === "row" ? "laser-h" : "laser-v");
+    if (kind === "row") d.style.top = ((r + 0.5) / ROWS * 100) + "%";
+    else d.style.left = ((c + 0.5) / COLS * 100) + "%";
+    fxLayer.appendChild(d);
+    setTimeout(() => d.remove(), 700);
+  }
+
   /* ---------------- 填坑 ---------------- */
   async function collapse(){
     const fresh = [];
@@ -934,22 +1180,70 @@
       if (!runs.length) break;
       chain++;
 
-      const uniq = new Map();
+      const clearSet = new Map();
+      const keepSet = new Map();
+      const lasers = [];
+
       runs.forEach(run => {
         run.cells.forEach(({r, c}) => {
           const t = grid[r][c];
-          if (t) uniq.set(r + "," + c, {r, c, tile: t});
+          if (t) clearSet.set(r + "," + c, {r, c, tile: t});
         });
       });
-      if (!uniq.size) break;
+      if (!clearSet.size) break;
 
-      let gained = uniq.size * 30;
-      gained += Math.round(uniq.size * 30 * (chain - 1) * 0.5);
-      gained += runs.filter(x => x.len >= 4).length * 40;
+      /* 四连及以上：保留其中一颗，升级为整行 / 整列特殊棋子 */
+      runs.forEach(run => {
+        if (run.len < 4) return;
+        let pick = null;
+        run.cells.forEach(({r, c}) => {
+          const t = grid[r][c];
+          if (!t || t.special) return;
+          if (!clearSet.has(r + "," + c)) return;
+          const focus = swapFocus && swapFocus.some(p => p.r === r && p.c === c);
+          if (!pick || (focus && !pick.focus)) pick = {r, c, tile: t, focus};
+        });
+        if (!pick) return;
+        const key = pick.r + "," + pick.c;
+        keepSet.set(key, {
+          r: pick.r, c: pick.c, tile: pick.tile,
+          special: run.dir === "v" ? "col" : "row"
+        });
+        clearSet.delete(key);
+      });
+
+      /* 特殊棋子被消除时触发：消除整行或整列 */
+      const queue = [];
+      clearSet.forEach(({r, c, tile}) => { if (tile.special) queue.push({r, c, tile}); });
+      const fired = new Set();
+      while (queue.length){
+        const {r, c, tile} = queue.shift();
+        const key = r + "," + c;
+        if (fired.has(key)) continue;
+        fired.add(key);
+        lasers.push({r, c, kind: tile.special});
+        const lineLen = tile.special === "row" ? COLS : ROWS;
+        for (let i = 0; i < lineLen; i++){
+          const rr = tile.special === "row" ? r : i;
+          const cc = tile.special === "row" ? i : c;
+          const k = rr + "," + cc;
+          if (keepSet.has(k)) continue;
+          const t2 = grid[rr][cc];
+          if (!t2 || clearSet.has(k)) continue;
+          clearSet.set(k, {r: rr, c: cc, tile: t2});
+          if (t2.special) queue.push({r: rr, c: cc, tile: t2});
+        }
+      }
+
+      let gained = clearSet.size * 30;
+      gained += Math.round(clearSet.size * 30 * (chain - 1) * 0.5);
+      gained += keepSet.size * 60 + lasers.length * 150;
       score += gained;
 
+      lasers.forEach(l => addLaser(l.r, l.c, l.kind));
+
       let sumR = 0, sumC = 0;
-      uniq.forEach(({r, c, tile}) => {
+      clearSet.forEach(({r, c, tile}) => {
         sumR += r; sumC += c;
         targets.forEach(t => { if (t.type === tile.type) t.got = Math.min(t.need, t.got + 1); });
         addBurst(r, c);
@@ -961,13 +1255,19 @@
         addSparks(mid.r, mid.c, 4);
       });
 
-      const avgR = sumR / uniq.size, avgC = sumC / uniq.size;
-      addScorePop(avgR, avgC, "+" + gained);
+      const n = clearSet.size || 1;
+      addScorePop(sumR / n, sumC / n, "+" + gained);
       updateHud(true);
 
-      await sleep(250);
+      keepSet.forEach(({tile, special}) => {
+        applySpecial(tile, special);
+        tile.el.classList.add("promote");
+        setTimeout(() => tile.el.classList.remove("promote"), 520);
+      });
 
-      uniq.forEach(({r, c, tile}) => {
+      await sleep(lasers.length ? 330 : 250);
+
+      clearSet.forEach(({r, c, tile}) => {
         tile.el.remove();
         if (grid[r][c] === tile) grid[r][c] = null;
       });
@@ -976,6 +1276,7 @@
       updateHud();
       await sleep(40);
     }
+    swapFocus = null;
     await sleep(120);
   }
 
@@ -1017,6 +1318,7 @@
 
     moves = Math.max(0, moves - 1);
     updateHud(true);
+    swapFocus = [a, b];
     await resolveAll();
 
     const win = targets.every(t => t.got >= t.need);
@@ -1094,6 +1396,7 @@
     busy = false;
     selected = null;
     lastWin = false;
+    swapFocus = null;
     grid = [];
 
     moves = 24 + Math.floor((lv - 1) / 2) * 2;
@@ -1257,6 +1560,11 @@
   function showWin(){
     lastWin = true;
     const earned = score >= thresholds[2] ? 3 : score >= thresholds[1] ? 2 : 1;
+
+    if (earned > (progress.best[level] || 0)) progress.best[level] = earned;
+    if (level < TOTAL_LEVELS) progress.unlocked = Math.max(progress.unlocked, level + 1);
+    saveProgress();
+
     modalTitle.textContent = "闯关成功！";
     modalTitle.classList.remove("lose");
     modalStars.innerHTML = [0,1,2].map(i => starMarkup(i < earned)).join("");
@@ -1265,7 +1573,7 @@
     });
     modalScore.textContent = score.toLocaleString("en-US");
     modalSub.textContent = earned === 3 ? "太棒了，完美通关！" : earned === 2 ? "表现出色，继续加油！" : "顺利过关，再接再厉！";
-    modalPrimary.textContent = "下一关";
+    modalPrimary.textContent = level < TOTAL_LEVELS ? "下一关" : "返回选关";
     modalSecondary.textContent = "重玩本关";
     modalSecondary.style.display = "";
     overlay.classList.add("show");
@@ -1286,6 +1594,7 @@
 
   modalPrimary.addEventListener("click", () => {
     overlay.classList.remove("show");
+    if (lastWin && level >= TOTAL_LEVELS){ openStart(); return; }
     setupLevel(lastWin ? level + 1 : level);
   });
 
@@ -1293,6 +1602,10 @@
     overlay.classList.remove("show");
     setupLevel(level);
   });
+
+  $("#modalBack").addEventListener("click", openStart);
+  $("#levelsBtn").addEventListener("click", openStart);
+  startPlay.addEventListener("click", () => startLevel(progress.unlocked));
 
   $("#hintBtn").addEventListener("click", () => { showHint(); });
 
@@ -1307,7 +1620,9 @@
   $("#friendR").innerHTML = SPRITES.fox;
 
   /* ---------------- 启动 ---------------- */
-  setupLevel(1);
+  $("#teamRow").innerHTML = TYPES.map(t => SPRITES[t]).join("");
+  loadProgress();
+  renderLevels();
 })();
 </script>
 </body>
